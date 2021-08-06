@@ -22,7 +22,7 @@
 		"ms-vscode.powershell",
 		"jmrog.vscode-nuget-package-manager",
 	],
-	"postCreateCommand": ""
+	"postCreateCommand": "./build.sh"
 }
 
 // Built with ❤ by [Pipeline Foundation](https://pipeline.foundation)
