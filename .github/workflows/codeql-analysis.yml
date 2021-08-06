@@ -30,31 +30,6 @@ jobs:
           queries: security-and-quality
           languages: csharp
 
-      # - name: Build solution
-      #   shell: pwsh
-      #   run: |
-      #     $pathToSolution = ""
-      #     $buildConfiguration = "Release"
-      #     $useSharedCompilation = "false"
-      #     $testProjects = "" # separate paths with comma as in: "test1", "test2"
-
-      #     dotnet nuget locals all --clear
-
-      #     # remove one or more test projects, 
-      #     # so that CodeQL only analyzes the source code
-      #     dotnet sln $pathToSolution remove $testProjects
-
-      #     dotnet clean $pathToSolution `
-      #     --configuration $buildConfiguration
-
-      #     dotnet restore $pathToSolution
-
-      #     dotnet build $pathToSolution `
-      #     -property:UseSharedCompilation=$useSharedCompilation `
-      #     --configuration $buildConfiguration `
-      #     --no-incremental `
-      #     --no-restore
-
       - name: Build solution
         run: |
           ./build.sh
