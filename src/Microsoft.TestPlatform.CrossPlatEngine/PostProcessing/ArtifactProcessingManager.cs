@@ -80,7 +80,7 @@ internal class ArtifactProcessingManager : IArtifactProcessingManager
             return;
         }
 
-        if (string.IsNullOrEmpty(_testSessionCorrelationId))
+        if (_testSessionCorrelationId.IsNullOrEmpty())
         {
             EqtTrace.Verbose("ArtifactProcessingManager.CollectArtifacts: null testSessionCorrelationId");
             return;
@@ -89,19 +89,21 @@ internal class ArtifactProcessingManager : IArtifactProcessingManager
         try
         {
             // We need to save in case of attachements, we'll show these at the end on console.
-            if (testRunCompleteEventArgs?.AttachmentSets.Count > 0)
+            if ((testRunCompleteEventArgs?.AttachmentSets.Count) <= 0)
             {
-                EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Saving data collectors artifacts for post process into {_processArtifactFolder}");
-                Stopwatch watch = Stopwatch.StartNew();
-                TPDebug.Assert(_testSessionProcessArtifactFolder is not null, "_testSessionProcessArtifactFolder is null");
-                _fileHelper.CreateDirectory(_testSessionProcessArtifactFolder);
-                EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Persist runsettings \n{runSettingsXml}");
-                _fileHelper.WriteAllTextToFile(Path.Combine(_testSessionProcessArtifactFolder, RunsettingsFileName), runSettingsXml);
-                var serializedExecutionComplete = _dataSerialized.SerializePayload(MessageType.ExecutionComplete, testRunCompleteEventArgs);
-                EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Persist ExecutionComplete message \n{serializedExecutionComplete}");
-                _fileHelper.WriteAllTextToFile(Path.Combine(_testSessionProcessArtifactFolder, ExecutionCompleteFileName), serializedExecutionComplete);
-                EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Artifacts saved in {watch.Elapsed}");
+                return;
             }
+
+            EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Saving data collectors artifacts for post process into {_processArtifactFolder}");
+            Stopwatch watch = Stopwatch.StartNew();
+            TPDebug.Assert(_testSessionProcessArtifactFolder is not null, "_testSessionProcessArtifactFolder is null");
+            _fileHelper.CreateDirectory(_testSessionProcessArtifactFolder);
+            EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Persist runsettings \n{runSettingsXml}");
+            _fileHelper.WriteAllTextToFile(Path.Combine(_testSessionProcessArtifactFolder, RunsettingsFileName), runSettingsXml);
+            var serializedExecutionComplete = _dataSerialized.SerializePayload(MessageType.ExecutionComplete, testRunCompleteEventArgs);
+            EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Persist ExecutionComplete message \n{serializedExecutionComplete}");
+            _fileHelper.WriteAllTextToFile(Path.Combine(_testSessionProcessArtifactFolder, ExecutionCompleteFileName), serializedExecutionComplete);
+            EqtTrace.Verbose($"ArtifactProcessingManager.CollectArtifacts: Artifacts saved in {watch.Elapsed}");
         }
         catch (Exception e)
         {
@@ -118,12 +120,13 @@ internal class ArtifactProcessingManager : IArtifactProcessingManager
         }
 
         // This is not expected, anyway we prefer avoid exception for post processing
-        if (string.IsNullOrEmpty(_testSessionCorrelationId))
+        if (_testSessionCorrelationId.IsNullOrEmpty())
         {
             EqtTrace.Error("ArtifactProcessingManager.PostProcessArtifacts: Unexpected null testSessionCorrelationId");
             return;
         }
 
+        TPDebug.Assert(_processArtifactFolder is not null, "_processArtifactFolder is null");
         if (!_fileHelper.DirectoryExists(_processArtifactFolder))
         {
             EqtTrace.Verbose("ArtifactProcessingManager.PostProcessArtifacts: There are no artifacts to postprocess");
@@ -213,15 +216,14 @@ internal class ArtifactProcessingManager : IArtifactProcessingManager
             CancellationToken.None);
     }
 
-
     private TestArtifacts[] LoadTestArtifacts()
     {
         TPDebug.Assert(_processArtifactFolder is not null, "_processArtifactFolder is null");
         return _fileHelper.GetFiles(_processArtifactFolder, "*.*", SearchOption.AllDirectories)
-        .Select(file => new { TestSessionId = Path.GetFileName(Path.GetDirectoryName(file)), Artifact = file })
-        .GroupBy(grp => grp.TestSessionId)
-        .Select(testSessionArtifact => new TestArtifacts(testSessionArtifact.Key, testSessionArtifact.Select(x => ParseArtifact(x.Artifact)).Where(x => x is not null).ToArray()!)) // Bang because null dataflow doesn't yet backport learning from the `Where` clause
-        .ToArray();
+            .Select(file => new { TestSessionId = Path.GetFileName(Path.GetDirectoryName(file)), Artifact = file })
+            .GroupBy(grp => grp.TestSessionId)
+            .Select(testSessionArtifact => new TestArtifacts(testSessionArtifact.Key!, testSessionArtifact.Select(x => ParseArtifact(x.Artifact)).Where(x => x is not null).ToArray()!)) // Bang because null dataflow doesn't yet backport learning from the `Where` clause
+            .ToArray();
     }
 
     private static Artifact? ParseArtifact(string fileName)
