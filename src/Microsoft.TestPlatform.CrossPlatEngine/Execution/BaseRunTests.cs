@@ -411,7 +411,11 @@ internal abstract class BaseRunTests
                 EqtTrace.Verbose("Attaching to default test host.");
 
                 attachedToTestHost = true;
+#if NET5_0_OR_GREATER
+                var pid = Environment.ProcessId;
+#else
                 var pid = Process.GetCurrentProcess().Id;
+#endif
                 if (!FrameworkHandle.AttachDebuggerToProcess(pid))
                 {
                     EqtTrace.Warning(
@@ -678,7 +682,7 @@ internal abstract class BaseRunTests
             EqtTrace.Warning("BaseRunTests.TryToRunInSTAThread: Failed to run in STA thread: {0}", ex);
             TestRunEventsHandler.HandleLogMessage(
                 TestMessageLevel.Warning,
-                string.Format(CultureInfo.CurrentUICulture, CrossPlatEngineResources.ExecutionThreadApartmentStateNotSupportedForFramework, _runConfiguration.TargetFramework.ToString()));
+                string.Format(CultureInfo.CurrentUICulture, CrossPlatEngineResources.ExecutionThreadApartmentStateNotSupportedForFramework, _runConfiguration.TargetFramework!.ToString()));
         }
 
         return success;
@@ -704,7 +708,7 @@ internal abstract class BaseRunTests
         {
             var updatedTestResult = _dataSerializer.Clone(testResult);
             TPDebug.Assert(updatedTestResult is not null, "updatedTestResult is null");
-            updatedTestResult.TestCase.Source = package;
+            updatedTestResult.TestCase.Source = package!;
             updatedTestResults.Add(updatedTestResult);
         }
 
@@ -723,7 +727,7 @@ internal abstract class BaseRunTests
         {
             var updatedTestCase = _dataSerializer.Clone(inProgressTestCase);
             TPDebug.Assert(updatedTestCase is not null, "updatedTestCase is null");
-            updatedTestCase.Source = package;
+            updatedTestCase.Source = package!;
             updatedTestCases.Add(updatedTestCase);
         }
 
