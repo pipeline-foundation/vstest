@@ -90,13 +90,21 @@ public class DotnetTestHostManagerTests
         _mockFileHelper.Setup(ph => ph.Exists(_defaultTestHostPath)).Returns(true);
         _mockFileHelper.Setup(ph => ph.Exists(DefaultDotnetPath)).Returns(true);
 
+#if NET5_0_OR_GREATER
+        var pid = Environment.ProcessId;
+#else
+        int pid;
+        using (var p = Process.GetCurrentProcess())
+            pid = p.Id;
+#endif
+
         _mockTestHostLauncher
             .Setup(th => th.LaunchTestHost(It.IsAny<TestProcessStartInfo>(), It.IsAny<CancellationToken>()))
-            .Returns(Process.GetCurrentProcess().Id);
+            .Returns(pid);
 
         _mockTestHostLauncher
             .Setup(th => th.LaunchTestHost(It.IsAny<TestProcessStartInfo>()))
-            .Returns(Process.GetCurrentProcess().Id);
+            .Returns(pid);
 
         _defaultTestProcessStartInfo = _dotnetHostManager.GetTestHostProcessStartInfo(new[] { defaultSourcePath }, null, _defaultConnectionInfo);
     }
@@ -168,7 +176,7 @@ public class DotnetTestHostManagerTests
 
         var startInfo = GetDefaultStartInfo();
 
-        Assert.IsFalse(startInfo.Arguments.Contains("--runtimeconfig \"test.runtimeconfig.json\""));
+        Assert.IsFalse(startInfo.Arguments!.Contains("--runtimeconfig \"test.runtimeconfig.json\""));
     }
 
     [TestMethod]
@@ -190,7 +198,7 @@ public class DotnetTestHostManagerTests
 
         var startInfo = GetDefaultStartInfo();
 
-        Assert.IsFalse(startInfo.Arguments.Contains("--depsfile \"test.deps.json\""));
+        Assert.IsFalse(startInfo.Arguments!.Contains("--depsfile \"test.deps.json\""));
     }
 
     [TestMethod]
@@ -217,7 +225,7 @@ public class DotnetTestHostManagerTests
     [TestMethod]
     public void GetTestHostProcessStartInfoShouldIncludeEnvironmentVariables()
     {
-        var environmentVariables = new Dictionary<string, string> { { "k1", "v1" }, { "k2", "v2" } };
+        var environmentVariables = new Dictionary<string, string?> { { "k1", "v1" }, { "k2", "v2" } };
         _mockFileHelper.Setup(ph => ph.Exists("testhost.dll")).Returns(true);
 
         var startInfo = _dotnetHostManager.GetTestHostProcessStartInfo(_testSource, environmentVariables, _defaultConnectionInfo);
@@ -430,7 +438,13 @@ public class DotnetTestHostManagerTests
     [TestMethod]
     public void LaunchTestHostShouldLaunchProcessWithNullEnvironmentVariablesOrArgs()
     {
-        var expectedProcessId = Process.GetCurrentProcess().Id;
+#if NET5_0_OR_GREATER
+        var expectedProcessId = Environment.ProcessId;
+#else
+        int expectedProcessId;
+        using (var p = Process.GetCurrentProcess())
+            expectedProcessId = p.Id;
+#endif
         _mockTestHostLauncher.Setup(thl => thl.LaunchTestHost(It.IsAny<TestProcessStartInfo>(), It.IsAny<CancellationToken>())).Returns(expectedProcessId);
         _mockFileHelper.Setup(ph => ph.Exists("testhost.dll")).Returns(true);
         var startInfo = GetDefaultStartInfo();
@@ -448,7 +462,13 @@ public class DotnetTestHostManagerTests
     [TestMethod]
     public void LaunchTestHostAsyncShouldNotStartHostProcessIfCancellationTokenIsSet()
     {
-        var expectedProcessId = Process.GetCurrentProcess().Id;
+#if NET5_0_OR_GREATER
+        var expectedProcessId = Environment.ProcessId;
+#else
+        int expectedProcessId;
+        using (var p = Process.GetCurrentProcess())
+            expectedProcessId = p.Id;
+#endif
         _mockTestHostLauncher.Setup(thl => thl.LaunchTestHost(It.IsAny<TestProcessStartInfo>())).Returns(expectedProcessId);
         _mockFileHelper.Setup(ph => ph.Exists("testhost.dll")).Returns(true);
         var startInfo = GetDefaultStartInfo();
@@ -462,7 +482,7 @@ public class DotnetTestHostManagerTests
     [TestMethod]
     public void LaunchTestHostShouldLaunchProcessWithEnvironmentVariables()
     {
-        var variables = new Dictionary<string, string> { { "k1", "v1" }, { "k2", "v2" } };
+        var variables = new Dictionary<string, string?> { { "k1", "v1" }, { "k2", "v2" } };
         var startInfo = new TestProcessStartInfo { EnvironmentVariables = variables };
         _dotnetHostManager.SetCustomLauncher(_mockTestHostLauncher.Object);
 
@@ -472,7 +492,7 @@ public class DotnetTestHostManagerTests
         processId.Wait();
 
         Assert.IsTrue(processId.Result);
-        _mockTestHostLauncher.Verify(thl => thl.LaunchTestHost(It.Is<TestProcessStartInfo>(x => x.EnvironmentVariables.Equals(variables)), It.IsAny<CancellationToken>()), Times.Once);
+        _mockTestHostLauncher.Verify(thl => thl.LaunchTestHost(It.Is<TestProcessStartInfo>(x => x.EnvironmentVariables!.Equals(variables)), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -571,13 +591,19 @@ public class DotnetTestHostManagerTests
         _dotnetHostManager.SetCustomLauncher(_mockTestHostLauncher.Object);
         await _dotnetHostManager.LaunchTestHostAsync(_defaultTestProcessStartInfo, CancellationToken.None);
 
-        _mockTestHostLauncher.Verify(thl => thl.LaunchTestHost(It.Is<TestProcessStartInfo>(x => x.Arguments.Equals(expectedArgs)), It.IsAny<CancellationToken>()), Times.Once);
+        _mockTestHostLauncher.Verify(thl => thl.LaunchTestHost(It.Is<TestProcessStartInfo>(x => x.Arguments!.Equals(expectedArgs)), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
     public void LaunchTestHostShouldSetExitCallBackInCaseCustomHost()
     {
-        var expectedProcessId = Process.GetCurrentProcess().Id;
+#if NET5_0_OR_GREATER
+        var expectedProcessId = Environment.ProcessId;
+#else
+        int expectedProcessId;
+        using (var p = Process.GetCurrentProcess())
+            expectedProcessId = p.Id;
+#endif
         _mockTestHostLauncher.Setup(thl => thl.LaunchTestHost(It.IsAny<TestProcessStartInfo>(), It.IsAny<CancellationToken>())).Returns(expectedProcessId);
         _mockFileHelper.Setup(ph => ph.Exists("testhost.dll")).Returns(true);
 
@@ -679,7 +705,7 @@ public class DotnetTestHostManagerTests
 
         var startInfo = _dotnetHostManager.GetTestHostProcessStartInfo(new[] { sourcePath }, null, _defaultConnectionInfo);
 
-        Assert.IsTrue(startInfo.Arguments.Contains(expectedTestHostPath));
+        Assert.IsTrue(startInfo.Arguments!.Contains(expectedTestHostPath));
     }
 
     [TestMethod]
@@ -744,7 +770,7 @@ public class DotnetTestHostManagerTests
 
         var startInfo = _dotnetHostManager.GetTestHostProcessStartInfo(new[] { sourcePath }, null, _defaultConnectionInfo);
 
-        Assert.IsTrue(startInfo.Arguments.Contains(testHostFullPath));
+        Assert.IsTrue(startInfo.Arguments!.Contains(testHostFullPath));
     }
 
     [TestMethod]
@@ -811,7 +837,7 @@ public class DotnetTestHostManagerTests
 
         var startInfo = _dotnetHostManager.GetTestHostProcessStartInfo(new[] { sourcePath }, null, _defaultConnectionInfo);
 
-        Assert.IsTrue(startInfo.Arguments.Contains(testHostPath));
+        Assert.IsTrue(startInfo.Arguments!.Contains(testHostPath));
     }
 
     [TestMethod]
@@ -877,7 +903,7 @@ public class DotnetTestHostManagerTests
 
         var startInfo = _dotnetHostManager.GetTestHostProcessStartInfo(new[] { sourcePath }, null, _defaultConnectionInfo);
 
-        Assert.IsTrue(startInfo.Arguments.Contains(testHostFullPath));
+        Assert.IsTrue(startInfo.Arguments!.Contains(testHostFullPath));
     }
 
     [TestMethod]
@@ -895,13 +921,13 @@ public class DotnetTestHostManagerTests
         var startInfo = _dotnetHostManager.GetTestHostProcessStartInfo(_testSource, null, _defaultConnectionInfo);
         if (!string.IsNullOrEmpty(expectedValue))
         {
-            Assert.AreEqual(1, startInfo.EnvironmentVariables.Count);
+            Assert.AreEqual(1, startInfo.EnvironmentVariables!.Count);
             Assert.IsNotNull(startInfo.EnvironmentVariables[envVar]);
             Assert.AreEqual(startInfo.EnvironmentVariables[envVar], expectedValue);
         }
         else
         {
-            Assert.AreEqual(0, startInfo.EnvironmentVariables.Count);
+            Assert.AreEqual(0, startInfo.EnvironmentVariables!.Count);
         }
     }
 
@@ -959,7 +985,13 @@ public class DotnetTestHostManagerTests
     [TestMethod]
     public async Task CleanTestHostAsyncShouldKillTestHostProcess()
     {
-        var pid = Process.GetCurrentProcess().Id;
+#if NET5_0_OR_GREATER
+        var pid = Environment.ProcessId;
+#else
+        int pid;
+        using (var p = Process.GetCurrentProcess())
+            pid = p.Id;
+#endif
         bool isVerified = false;
         _mockProcessHelper.Setup(ph => ph.TerminateProcess(It.IsAny<Process>()))
             .Callback<object>(p => isVerified = ((Process)p).Id == pid);
@@ -975,7 +1007,13 @@ public class DotnetTestHostManagerTests
     [TestMethod]
     public async Task CleanTestHostAsyncShouldNotThrowIfTestHostIsNotStarted()
     {
-        var pid = Process.GetCurrentProcess().Id;
+#if NET5_0_OR_GREATER
+        var pid = Environment.ProcessId;
+#else
+        int pid;
+        using (var p = Process.GetCurrentProcess())
+            pid = p.Id;
+#endif
         bool isVerified = false;
         _mockProcessHelper.Setup(ph => ph.TerminateProcess(It.IsAny<Process>())).Callback<object>(p => isVerified = ((Process)p).Id == pid).Throws<Exception>();
 
@@ -1005,7 +1043,7 @@ public class DotnetTestHostManagerTests
             """;
         _dotnetHostManager.Initialize(_mockMessageLogger.Object, runSettingsXml);
 
-        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string>() };
+        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string?>() };
         // Sanity check
         Assert.AreEqual(0, startInfo.EnvironmentVariables.Count);
 
@@ -1044,7 +1082,7 @@ public class DotnetTestHostManagerTests
             """;
         _dotnetHostManager.Initialize(_mockMessageLogger.Object, runSettingsXml);
 
-        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string>() };
+        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string?>() };
 
         // Act
         _dotnetHostManager.ForwardDotnetRootEnvironmentVariable(startInfo);
@@ -1074,7 +1112,7 @@ public class DotnetTestHostManagerTests
             """;
         _dotnetHostManager.Initialize(_mockMessageLogger.Object, runSettingsXml);
 
-        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string>() };
+        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string?>() };
         // Sanity check
         Assert.AreEqual(0, startInfo.EnvironmentVariables.Count);
 
@@ -1113,7 +1151,7 @@ public class DotnetTestHostManagerTests
             """;
         _dotnetHostManager.Initialize(_mockMessageLogger.Object, runSettingsXml);
 
-        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string>() };
+        var startInfo = new TestProcessStartInfo { EnvironmentVariables = new Dictionary<string, string?>() };
         // Sanity check
         Assert.AreEqual(0, startInfo.EnvironmentVariables.Count);
 
@@ -1151,7 +1189,7 @@ public class DotnetTestHostManagerTests
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
-                        It.IsAny<IDictionary<string, string>>(),
+                        It.IsAny<IDictionary<string, string?>>(),
                         It.IsAny<Action<object?, string?>>(),
                         It.IsAny<Action<object?>>(),
                         It.IsAny<Action<object?, string?>>()))
@@ -1175,7 +1213,7 @@ public class DotnetTestHostManagerTests
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
-                        It.IsAny<IDictionary<string, string>>(),
+                        It.IsAny<IDictionary<string, string?>>(),
                         It.IsAny<Action<object?, string?>>(),
                         It.IsAny<Action<object?>>(),
                         It.IsAny<Action<object?, string?>>()))
