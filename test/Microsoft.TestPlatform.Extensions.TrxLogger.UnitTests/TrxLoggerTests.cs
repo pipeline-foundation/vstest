@@ -857,6 +857,17 @@ public class TrxLoggerTests
         Assert.ThrowsException<ArgumentException>(() => _testableTrxLogger.Initialize(_events.Object, _parameters));
     }
 
+    [TestMethod]
+    public void SkipInitializeDictionaryShouldNotFail()
+    {
+        var logger = new TestableTrxLogger();
+        logger.Initialize(_events.Object, Path.GetTempPath());
+        var testRunCompleteEventArgs = CreateTestRunCompleteEventArgs();
+        logger.TestRunCompleteHandler(new object(), testRunCompleteEventArgs);
+        Assert.IsTrue(File.Exists(logger.TrxFile));
+        File.Delete(logger.TrxFile);
+    }
+
     private void ValidateTestIdAndNameInTrx()
     {
         TestCase testCase = CreateTestCase("TestCase");
@@ -890,15 +901,13 @@ public class TrxLoggerTests
 
     private static string? GetElementValueFromTrx(string trxFileName, string fieldName)
     {
-        using (FileStream file = File.OpenRead(trxFileName))
-        using (XmlReader reader = XmlReader.Create(file))
+        using FileStream file = File.OpenRead(trxFileName);
+        using XmlReader reader = XmlReader.Create(file);
+        while (reader.Read())
         {
-            while (reader.Read())
+            if (reader.Name.Equals(fieldName) && reader.NodeType == XmlNodeType.Element)
             {
-                if (reader.Name.Equals(fieldName) && reader.NodeType == XmlNodeType.Element)
-                {
-                    return reader.ReadElementContentAsString();
-                }
+                return reader.ReadElementContentAsString();
             }
         }
 
