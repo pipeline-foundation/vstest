@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.Internal.CodeCoverage" Version="17.9.4-beta.23601.1">
+    <Dependency Name="Microsoft.Internal.CodeCoverage" Version="17.9.4-beta.23601.2">
       <Uri>https://dev.azure.com/devdiv/DevDiv/_git/vs-code-coverage</Uri>
-      <Sha>6d76eb8cce75f09841c821ac02981d2253799b06</Sha>
+      <Sha>86fcc0c141260de016187391cde695a1677b4857</Sha>
     </Dependency>
     <Dependency Name="Microsoft.Diagnostics.NETCore.Client" Version="0.2.452401">
       <Uri>https://github.com/dotnet/diagnostics</Uri>
@@ -41,9 +41,9 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.23567.1">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.23601.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>b6801170e6ca8bf12bdff1f10d410c5e01660681</Sha>
+      <Sha>38aa367e014493c6f6ebfe94d9029bea01d072c4</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
     <Dependency Name="Microsoft.DiaSymReader.Pdb2Pdb" Version="1.1.0-beta2-19575-01">
@@ -54,9 +54,9 @@
       <Uri>https://github.com/dotnet/symreader-converter</Uri>
       <Sha>c5ba7c88f92e2dde156c324a8c8edc04d9fa4fe0</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XliffTasks" Version="9.0.0-beta.23567.1">
+    <Dependency Name="Microsoft.DotNet.XliffTasks" Version="9.0.0-beta.23601.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>b6801170e6ca8bf12bdff1f10d410c5e01660681</Sha>
+      <Sha>38aa367e014493c6f6ebfe94d9029bea01d072c4</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
