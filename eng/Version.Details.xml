@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.Internal.CodeCoverage" Version="17.11.1-preview.24253.5">
+    <Dependency Name="Microsoft.Internal.CodeCoverage" Version="17.11.1-preview.24256.1">
       <Uri>https://dev.azure.com/devdiv/DevDiv/_git/vs-code-coverage</Uri>
-      <Sha>1bc96d15cffcbfa139a9d2fca27000bfd06b9874</Sha>
+      <Sha>bbbf5a4d1633d2f5bc953779cd0112d32daf25c9</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.Diagnostics.NETCore.Client" Version="0.2.0-preview.24226.1">
+    <Dependency Name="Microsoft.Diagnostics.NETCore.Client" Version="0.2.0-preview.24253.1">
       <Uri>https://github.com/dotnet/diagnostics</Uri>
-      <Sha>b6418173e784ec41a65c710c559120f8996fca7d</Sha>
+      <Sha>78b52e20255693ecce58b51807dd4a582e14d4ae</Sha>
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
-    <Dependency Name="Microsoft.SourceBuild.Intermediate.diagnostics" Version="8.0.0-preview.24226.1">
+    <Dependency Name="Microsoft.SourceBuild.Intermediate.diagnostics" Version="8.0.0-preview.24253.1">
       <Uri>https://github.com/dotnet/diagnostics</Uri>
-      <Sha>b6418173e784ec41a65c710c559120f8996fca7d</Sha>
+      <Sha>78b52e20255693ecce58b51807dd4a582e14d4ae</Sha>
       <SourceBuild RepoName="diagnostics" ManagedOnly="true" />
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
-    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-externals" Version="9.0.0-alpha.1.24222.1">
+    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-externals" Version="9.0.0-alpha.1.24229.1">
       <Uri>https://github.com/dotnet/source-build-externals</Uri>
-      <Sha>1223ec47c74e79d44950d429a36386de6c7bf9c8</Sha>
+      <Sha>b02769661c9a51985877819e8bdebfbcbee65710</Sha>
       <SourceBuild RepoName="source-build-externals" ManagedOnly="true" />
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
-    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-reference-packages" Version="9.0.0-alpha.1.24162.2">
+    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-reference-packages" Version="9.0.0-alpha.1.24252.1">
       <Uri>https://github.com/dotnet/source-build-reference-packages</Uri>
-      <Sha>c0b5d69a1a1513528c77fffff708c7502d57c35c</Sha>
+      <Sha>9c1cc994f8123ec2a923c5179c238c13da1b4ab7</Sha>
       <SourceBuild RepoName="source-build-reference-packages" ManagedOnly="true" />
     </Dependency>
     <!-- Necessary for source-build. This allows the live version of the package to be used by source-build. -->
@@ -44,14 +44,14 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.24229.1">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.24253.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>be933308b9024d798a9a22c0b8f3c8e3616ffbd8</Sha>
+      <Sha>020255bcf7d0b8beed7de05338d97396982ae527</Sha>
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
-    <Dependency Name="Microsoft.SourceBuild.Intermediate.arcade" Version="9.0.0-beta.24229.1">
+    <Dependency Name="Microsoft.SourceBuild.Intermediate.arcade" Version="9.0.0-beta.24253.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>be933308b9024d798a9a22c0b8f3c8e3616ffbd8</Sha>
+      <Sha>020255bcf7d0b8beed7de05338d97396982ae527</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
     <Dependency Name="Microsoft.DiaSymReader.Pdb2Pdb" Version="1.1.0-beta2-19575-01">
@@ -62,9 +62,9 @@
       <Uri>https://github.com/dotnet/symreader-converter</Uri>
       <Sha>c5ba7c88f92e2dde156c324a8c8edc04d9fa4fe0</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XliffTasks" Version="9.0.0-beta.24229.1">
+    <Dependency Name="Microsoft.DotNet.XliffTasks" Version="9.0.0-beta.24253.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>be933308b9024d798a9a22c0b8f3c8e3616ffbd8</Sha>
+      <Sha>020255bcf7d0b8beed7de05338d97396982ae527</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
