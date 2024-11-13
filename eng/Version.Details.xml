@@ -5,14 +5,14 @@
       <Uri>https://dev.azure.com/devdiv/DevDiv/_git/vs-code-coverage</Uri>
       <Sha>30b8eb1de4e5da999af0b9d03a30e5897ae5e8d6</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.Diagnostics.NETCore.Client" Version="0.2.0-preview.24520.1">
+    <Dependency Name="Microsoft.Diagnostics.NETCore.Client" Version="0.2.0-preview.24560.1">
       <Uri>https://github.com/dotnet/diagnostics</Uri>
-      <Sha>335c0c013c3a761792bfa83c0dbaadd1f0545f07</Sha>
+      <Sha>141a406a4c74d9ff6d6452dc999f78c08eee49a0</Sha>
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
-    <Dependency Name="Microsoft.SourceBuild.Intermediate.diagnostics" Version="8.0.0-preview.24520.1">
+    <Dependency Name="Microsoft.SourceBuild.Intermediate.diagnostics" Version="9.0.0-preview.24560.1">
       <Uri>https://github.com/dotnet/diagnostics</Uri>
-      <Sha>335c0c013c3a761792bfa83c0dbaadd1f0545f07</Sha>
+      <Sha>141a406a4c74d9ff6d6452dc999f78c08eee49a0</Sha>
       <SourceBuild RepoName="diagnostics" ManagedOnly="true" />
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
@@ -22,9 +22,9 @@
       <SourceBuild RepoName="source-build-externals" ManagedOnly="true" />
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
-    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-reference-packages" Version="9.0.0-alpha.1.24352.1">
+    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-reference-packages" Version="10.0.0-alpha.1.24558.1">
       <Uri>https://github.com/dotnet/source-build-reference-packages</Uri>
-      <Sha>cc732c57199f725857c201da146525e3be6bc504</Sha>
+      <Sha>1ebd9ce245112164207d961c0d2faea741c7c489</Sha>
       <SourceBuild RepoName="source-build-reference-packages" ManagedOnly="true" />
     </Dependency>
     <!-- Necessary for source-build. This allows the live version of the package to be used by source-build. -->
