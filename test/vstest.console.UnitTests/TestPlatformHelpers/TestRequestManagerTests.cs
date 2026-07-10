@@ -130,7 +130,7 @@ public class TestRequestManagerTests
         _mockLoggerEvents = new DummyLoggerEvents(TestSessionMessageLogger.Instance);
         _ = new TestRequestManager(_commandLineOptions,
             new Mock<ITestPlatform>().Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             new Mock<ITestPlatformEventSource>().Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -212,7 +212,7 @@ public class TestRequestManagerTests
         _commandLineOptions.TestCaseFilterValue = testCaseFilterValue;
         _testRequestManager = new TestRequestManager(_commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -264,7 +264,7 @@ public class TestRequestManagerTests
         _commandLineOptions.TestCaseFilterValue = testCaseFilterValue;
         _testRequestManager = new TestRequestManager(_commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -314,7 +314,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -365,7 +365,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -410,7 +410,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -455,7 +455,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -500,7 +500,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -557,7 +557,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -605,7 +605,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -653,7 +653,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -957,7 +957,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -1023,7 +1023,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -1072,7 +1072,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -1119,7 +1119,7 @@ public class TestRequestManagerTests
         _testRequestManager = new TestRequestManager(
             _commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
@@ -1168,7 +1168,7 @@ public class TestRequestManagerTests
         payload.TestPlatformOptions = new TestPlatformOptions { TestCaseFilter = testCaseFilterValue };
         _testRequestManager = new TestRequestManager(_commandLineOptions,
             _mockTestPlatform.Object,
-            TestRunResultAggregator.Instance,
+            new TestRunResultAggregator(),
             _mockTestPlatformEventSource.Object,
             _inferHelper,
             _mockMetricsPublisherTask,
