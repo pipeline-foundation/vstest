@@ -62,8 +62,8 @@ internal class ArgumentProcessorFactory
     /// </param>
     /// <param name="commandLineOptions">
     /// The command line options that the created argument processors read from and write to.
-    /// Defaults to the ambient <see cref="CommandLineOptions.Instance"/> when not provided, so that
-    /// callers (and the composition root) can inject an isolated instance instead of sharing static state.
+    /// When not provided a fresh, request-scoped instance is created, so that callers never
+    /// share command line state through a static singleton.
     /// </param>
     /// <param name="testRequestManager">
     /// The test request manager that the run/discovery argument processors hand to their executors.
@@ -76,7 +76,7 @@ internal class ArgumentProcessorFactory
     {
         runSettingsProvider ??= RunSettingsManager.Instance;
         runSettingsHelper ??= RunSettingsHelper.Instance;
-        commandLineOptions ??= CommandLineOptions.Instance;
+        commandLineOptions ??= new CommandLineOptions();
         testRequestManager ??= new LazyTestRequestManager(() => new TestRequestManager(commandLineOptions));
         var defaultArgumentProcessor = GetDefaultArgumentProcessors(runSettingsProvider, runSettingsHelper, commandLineOptions, testRequestManager);
 
